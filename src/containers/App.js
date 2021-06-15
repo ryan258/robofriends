@@ -40,7 +40,7 @@ const App = (props) => {
     return robot.name.toLowerCase().includes(searchField.toLowerCase())
   })
 
-  console.log(robots)
+  // console.log(robots)
 
   return !robots.length ? (
     <h1>Loading</h1>

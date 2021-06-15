@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 // we use connect so we don't have to use store.subscribe
 // - it'll make the component redux aware
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import { createLogger } from 'redux-logger'
+
 import { searchRobots } from './reducers'
 
 import App from './containers/App'
@@ -11,9 +13,11 @@ import App from './containers/App'
 import 'tachyons'
 import './index.css'
 
+const logger = createLogger()
+
 // in real life we have many reducers, in the store we'll combine all of them into 1 rootReducer
 // const store = createStore(rootReducer)
-const store = createStore(searchRobots)
+const store = createStore(searchRobots, applyMiddleware(logger))
 
 // the <Provider> will take care of passing the store down to all the components down the component tree
 ReactDOM.render(
