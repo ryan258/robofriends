@@ -5,7 +5,7 @@ import CardList from '../components/CardList'
 import SearchBox from '../components/SearchBox'
 import Scroll from '../components/Scroll'
 
-import { setSearchField } from '../actions'
+import { requestRobots, setSearchField } from '../actions'
 
 import './App.css'
 import ErrorBoundary from '../components/ErrorBoundary'
@@ -13,8 +13,11 @@ import ErrorBoundary from '../components/ErrorBoundary'
 //! tell what pieve of state to listen to and send it down as props
 const mapStateToProps = (state) => {
   return {
-    searchField: state.searchField
-    // searchField: state.searchRobots.searchField
+    // searchField: state.searchField
+    searchField: state.searchRobots.searchField,
+    robots: state.requestRobots.robots,
+    isPending: state.requestRobots.isPending,
+    error: state.requestRobots.error
   }
 }
 
@@ -22,18 +25,20 @@ const mapStateToProps = (state) => {
 //! tell what props to listen to that are actions that need to get dispatched
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots())
   }
 }
 
 const App = (props) => {
-  const [robots, setRobots] = useState([])
-  const { searchField, onSearchChange } = props
+  // const [robots, setRobots] = useState([])
+  const { searchField, onSearchChange, robots, isPending } = props
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((users) => setRobots(users))
+    props.onRequestRobots()
+    // fetch('https://jsonplaceholder.typicode.com/users')
+    //   .then((response) => response.json())
+    //   .then((users) => setRobots(users))
   }, [])
 
   const filteredRobots = robots.filter((robot) => {
@@ -42,7 +47,7 @@ const App = (props) => {
 
   // console.log(robots)
 
-  return !robots.length ? (
+  return isPending ? (
     <h1>Loading</h1>
   ) : (
     <div className="tc">
