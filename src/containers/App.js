@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import CardList from '../components/CardList'
+import Header from '../components/Header'
 import SearchBox from '../components/SearchBox'
 import Scroll from '../components/Scroll'
 
@@ -9,6 +10,11 @@ import { requestRobots, setSearchField } from '../actions'
 
 import './App.css'
 import ErrorBoundary from '../components/ErrorBoundary'
+
+if (process.env.NODE_ENV !== 'production') {
+  const { whyDidYouUpdate } = require('why-did-you-update')
+  whyDidYouUpdate(React)
+}
 
 //! tell what pieve of state to listen to and send it down as props
 const mapStateToProps = (state) => {
@@ -51,7 +57,7 @@ const App = (props) => {
     <h1>Loading</h1>
   ) : (
     <div className="tc">
-      <h1 className="f1">RoboFriends</h1>
+      <Header />
       <SearchBox searchChange={onSearchChange} />
       <Scroll>
         <ErrorBoundary>

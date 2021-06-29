@@ -2,6 +2,7 @@ import React from 'react'
 import Card from './Card'
 
 const CardList = ({ robots }) => {
+  console.log('card list rerendered')
   // if (true) {
   //   throw new Error('boop....')
   // }
